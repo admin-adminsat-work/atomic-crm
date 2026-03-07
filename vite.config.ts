@@ -6,8 +6,6 @@ import { visualizer } from "rollup-plugin-visualizer";
 import createHtmlPlugin from "vite-plugin-simple-html";
 import { VitePWA } from "vite-plugin-pwa";
 
-import { cloudflare } from "@cloudflare/vite-plugin";
-
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react(), tailwindcss(), visualizer({
@@ -27,7 +25,7 @@ export default defineConfig({
       maximumFileSizeToCacheInBytes: 5 * 1024 * 1024, // 5 MiB
     },
     manifest: false, // Use existing manifest.json from public/
-  }), cloudflare()],
+  })],
   define:
     process.env.NODE_ENV === "production" && process.env.VITE_SUPABASE_URL
       ? {

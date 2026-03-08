@@ -116,32 +116,55 @@
             </div>
         </div>
     </body>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
     <script>
-        function interceptAuthCallback() {
+        var SUPABASE_URL = 'https://vmyvjxsjxxyepbvlfdwd.supabase.co';
+        var SUPABASE_KEY = 'sb_publishable_fsRsiO8qtD1otvHTjTT5Mg_gDaAmJ-D';
+
+        async function interceptAuthCallback() {
             // PKCE flow: Supabase sends ?code=XXX&type=YYY as query params
-            const queryParams = new URLSearchParams(window.location.search);
-            const code = queryParams.get('code');
-            const queryType = queryParams.get('type');
+            var queryParams = new URLSearchParams(window.location.search);
+            var code = queryParams.get('code');
+            var queryType = queryParams.get('type');
 
             if (code) {
                 if (queryType === 'recovery' || queryType === 'invite') {
-                    window.location.href = `./#/set-password?code=${code}&type=${queryType}`;
-                } else {
-                    window.location.href = `./#/auth-callback?code=${code}&type=${queryType}`;
+                    // Exchange the code for a session here, before entering React,
+                    // so ra-supabase-core receives access_token + refresh_token as it expects.
+                    try {
+                        var client = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+                        var result = await client.auth.exchangeCodeForSession(code);
+                        if (result.data && result.data.session) {
+                            var s = result.data.session;
+                            window.location.href =
+                                './#/set-password?access_token=' + encodeURIComponent(s.access_token) +
+                                '&refresh_token=' + encodeURIComponent(s.refresh_token) +
+                                '&type=' + encodeURIComponent(queryType);
+                            return;
+                        }
+                    } catch (e) {
+                        console.error('PKCE exchange failed', e);
+                    }
+                    window.location.href = './#/login?error=invalid_link';
+                    return;
                 }
+                // Other PKCE flows (e.g. SSO): pass code through to the SPA
+                window.location.href = './#/auth-callback?code=' + encodeURIComponent(code) + '&type=' + encodeURIComponent(queryType || '');
                 return;
             }
 
             // Implicit flow: Supabase sends #access_token=XXX&refresh_token=YYY&type=ZZZ as hash
-            const hashParams = new URLSearchParams(window.location.hash.substring(1));
-            const access_token = hashParams.get('access_token');
-            const refresh_token = hashParams.get('refresh_token');
-            const type = hashParams.get('type');
+            var hashParams = new URLSearchParams(window.location.hash.substring(1));
+            var access_token = hashParams.get('access_token');
+            var refresh_token = hashParams.get('refresh_token');
+            var type = hashParams.get('type');
 
             if (type === 'recovery' || type === 'invite') {
-                window.location.href = `./#/set-password?access_token=${access_token}&refresh_token=${refresh_token}&type=${type}`;
+                window.location.href = './#/set-password?access_token=' + encodeURIComponent(access_token) +
+                    '&refresh_token=' + encodeURIComponent(refresh_token) + '&type=' + encodeURIComponent(type);
             } else {
-                window.location.href = `./#/auth-callback?access_token=${access_token}&refresh_token=${refresh_token}&type=${type}`;
+                window.location.href = './#/auth-callback?access_token=' + encodeURIComponent(access_token) +
+                    '&refresh_token=' + encodeURIComponent(refresh_token) + '&type=' + encodeURIComponent(type || '');
             }
         }
 

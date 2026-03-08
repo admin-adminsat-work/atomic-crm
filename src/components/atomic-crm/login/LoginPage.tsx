@@ -92,7 +92,7 @@ export const LoginPage = (props: { redirectTo?: string }) => {
     <div className="min-h-screen flex">
       <div className="relative grid w-full lg:grid-cols-2">
         <div className="relative hidden h-full flex-col bg-muted p-10 text-white dark:border-r lg:flex">
-          <div className="absolute inset-0 bg-[#02A2FE]" />
+          <div className="absolute inset-0" style={{ backgroundColor: '#02A2FE' }} />
           <div className="relative z-20 flex items-center text-lg font-medium">
             <img className="h-6 mr-2" src={darkModeLogo} alt={title} />
             {title}
@@ -120,7 +120,8 @@ export const LoginPage = (props: { redirectTo?: string }) => {
                 <div className="flex flex-col gap-4">
                   <Button
                     type="submit"
-                    className="cursor-pointer bg-[#02A2FE] hover:bg-[#02A2FE]/90"
+                    className="cursor-pointer"
+                    style={{ backgroundColor: '#02A2FE' }}
                     disabled={loading}
                   >
                     Sign in

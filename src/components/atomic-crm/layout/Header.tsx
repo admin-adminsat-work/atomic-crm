@@ -29,7 +29,7 @@ const Header = () => {
   return (
     <>
       <nav className="grow">
-        <header className="bg-secondary">
+        <header className="bg-secondary py-2">
           <div className="px-4">
             <div className="flex justify-between items-center flex-1">
               <Link
@@ -37,12 +37,12 @@ const Header = () => {
                 className="flex items-center gap-2 text-secondary-foreground no-underline"
               >
                 <img
-                  className="[.light_&]:hidden h-[45px]"
+                  className="[.light_&]:hidden h-[56px]"
                   src={darkModeLogo}
                   alt={title}
                 />
                 <img
-                  className="[.dark_&]:hidden h-[45px]"
+                  className="[.dark_&]:hidden h-[56px]"
                   src={lightModeLogo}
                   alt={title}
                 />

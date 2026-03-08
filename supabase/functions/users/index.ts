@@ -152,7 +152,9 @@ async function inviteUser(req: Request, currentUserSale: any) {
       return createErrorResponse(500, "Internal Server Error");
     }
     const { error: emailError } =
-      await supabaseAdmin.auth.admin.inviteUserByEmail(email);
+      await supabaseAdmin.auth.admin.inviteUserByEmail(email, {
+        redirectTo: "https://crm.adminsat.work/auth-callback.html",
+      });
 
     if (emailError) {
       console.error(`Error inviting user, email_error=${emailError}`);

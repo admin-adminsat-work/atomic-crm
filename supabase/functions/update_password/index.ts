@@ -7,6 +7,7 @@ import { AuthMiddleware, UserMiddleware } from "../_shared/authentication.ts";
 async function updatePassword(user: any) {
   const { data, error } = await supabaseAdmin.auth.resetPasswordForEmail(
     user.email,
+    { redirectTo: "https://crm.adminsat.work/auth-callback.html" },
   );
 
   if (!data || error) {

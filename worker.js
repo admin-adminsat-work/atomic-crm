@@ -17,6 +17,7 @@ export default {
         headers: {
           "Content-Type": "text/html; charset=utf-8",
           "Cache-Control": "no-cache, no-store, must-revalidate",
+          "X-Worker-Active": "true",
         },
       });
     }

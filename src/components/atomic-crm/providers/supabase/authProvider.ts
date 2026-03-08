@@ -87,6 +87,12 @@ function clearCache() {
 
 export const authProvider: AuthProvider = {
   ...baseAuthProvider,
+  resetPassword: async ({ email }: { email: string }) => {
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: "https://crm.adminsat.work/auth-callback.html",
+    });
+    if (error) throw error;
+  },
   login: async (params) => {
     if (params.ssoDomain) {
       const { error } = await supabase.auth.signInWithSSO({

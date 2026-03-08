@@ -74,7 +74,7 @@ export const SetPasswordPage = () => {
     );
   }
 
-  if (pkceError || (!access_token || !refresh_token)) {
+  if (pkceError || !access_token || !refresh_token) {
     if (process.env.NODE_ENV === "development") {
       console.error("Missing access_token or refresh_token for set password");
     }

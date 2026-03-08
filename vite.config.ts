@@ -8,24 +8,30 @@ import { VitePWA } from "vite-plugin-pwa";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react(), tailwindcss(), visualizer({
-    open: process.env.NODE_ENV !== "CI",
-    filename: "./dist/stats.html",
-  }), createHtmlPlugin({
-    minify: true,
-    inject: {
-      data: {
-        mainScript: `src/main.tsx`,
+  plugins: [
+    react(),
+    tailwindcss(),
+    visualizer({
+      open: process.env.NODE_ENV !== "CI",
+      filename: "./dist/stats.html",
+    }),
+    createHtmlPlugin({
+      minify: true,
+      inject: {
+        data: {
+          mainScript: `src/main.tsx`,
+        },
       },
-    },
-  }), VitePWA({
-    registerType: "autoUpdate",
-    workbox: {
-      globPatterns: ["**/*.{js,css,html,ico,png,svg,woff,woff2}"],
-      maximumFileSizeToCacheInBytes: 5 * 1024 * 1024, // 5 MiB
-    },
-    manifest: false, // Use existing manifest.json from public/
-  })],
+    }),
+    VitePWA({
+      registerType: "autoUpdate",
+      workbox: {
+        globPatterns: ["**/*.{js,css,html,ico,png,svg,woff,woff2}"],
+        maximumFileSizeToCacheInBytes: 5 * 1024 * 1024, // 5 MiB
+      },
+      manifest: false, // Use existing manifest.json from public/
+    }),
+  ],
   define:
     process.env.NODE_ENV === "production" && process.env.VITE_SUPABASE_URL
       ? {

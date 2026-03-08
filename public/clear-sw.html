@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Clearing cache…</title>
+        <style>
+            body {
+                margin: 0;
+                padding: 40px;
+                font-family: sans-serif;
+                background: #fafafa;
+                color: #333;
+            }
+        </style>
+    </head>
+    <body>
+        <p id="status">Unregistering service worker and clearing cache…</p>
+        <script>
+            async function clearAndRedirect() {
+                const statusEl = document.getElementById('status');
+                try {
+                    // Unregister all service workers
+                    if ('serviceWorker' in navigator) {
+                        const registrations = await navigator.serviceWorker.getRegistrations();
+                        for (const reg of registrations) {
+                            await reg.unregister();
+                        }
+                    }
+
+                    // Clear all caches
+                    if ('caches' in window) {
+                        const cacheNames = await caches.keys();
+                        for (const name of cacheNames) {
+                            await caches.delete(name);
+                        }
+                    }
+
+                    statusEl.textContent = 'Done. Redirecting…';
+                } catch (e) {
+                    statusEl.textContent = 'Error: ' + e.message + '. Redirecting anyway…';
+                }
+
+                // Hard-navigate to root so the browser fetches fresh assets
+                window.location.replace('/');
+            }
+
+            clearAndRedirect();
+        </script>
+    </body>
+</html>

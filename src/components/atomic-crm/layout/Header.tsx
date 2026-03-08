@@ -37,16 +37,16 @@ const Header = () => {
                 className="flex items-center gap-2 text-secondary-foreground no-underline"
               >
                 <img
-                  className="[.light_&]:hidden h-6"
+                  className="[.light_&]:hidden h-9"
                   src={darkModeLogo}
                   alt={title}
                 />
                 <img
-                  className="[.dark_&]:hidden h-6"
+                  className="[.dark_&]:hidden h-9"
                   src={lightModeLogo}
                   alt={title}
                 />
-                <h1 className="text-xl font-semibold">{title}</h1>
+                <span className="text-xl font-semibold">{title}</span>
               </Link>
               <div>
                 <nav className="flex">

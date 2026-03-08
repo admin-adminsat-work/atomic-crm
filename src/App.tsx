@@ -27,7 +27,7 @@ import { CRM } from "@/components/atomic-crm/root/CRM";
 const App = () => (
   <CRM
     lightModeLogo="./logos/logo_aaw_horizontal.png"
-    darkModeLogo="./logos/logo_aaw_horizontal.png"
+    darkModeLogo="./logos/logo_aaw_horizontal_white.png"
     title="CRM"
   />
 );
